@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login</title>
+        <style>
+            body {
+                background-color: #19D8E6;
+                font-family: Arial;
+                margin: 0;
+                padding: 0;
+            }
+            .login_box {
+                background-color: #FFF;
+                border-radius: 20px;
+                margin: 100px auto;
+                max-width: 400px;
+                padding: 30px;
+            }
+            input[type="text"], input[type="password"], input[type="submit"] {
+                box-sizing: border-box;
+                margin-top: 5px;
+                margin-bottom: 10px;
+                padding: 8px;
+                width: 100%;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="login_box">
+            <h2>Welcome to Medical Laboratory Database!</h2>
+            <form action="login.php" method="POST">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required><br>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required><br>
+                <input type="submit" value="Login">
+            </form>
+        </div>
+    </body>
+</html>
