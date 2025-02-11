@@ -2,13 +2,11 @@ version: "3"
 
 services:
   webserver:
-    image: php:8.2-apache
+    build: ./bin/webserver
     container_name: webserver
     ports:
       - "8080:80"
       # - "443:443"
-    links:
-      - database
     volumes:
       - ./www:/var/www/html:rw
       - ./config/php/php.ini:/usr/local/etc/php/php.ini
@@ -17,7 +15,7 @@ services:
       APACHE_DOCUMENT_ROOT: /var/www/html
       MYSQL_ROOT_PASSWORD: root
   database:
-    image: mysql
+    build: mysql
     container_name: database
     ports:
       - "3306:3306"
@@ -25,12 +23,15 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: database
     volumes:
-      - ./data/mysql:/var/lib/mysql
+      # - ./data/mysql:/var/lib/mysql # since we use the sql file to init
+      - ./sql_init:/docker-entrypoint-initdb.d
       - ./logs/mysql:/var/log/mysql
   phpmyadmin:
     image: phpmyadmin
     links:
       - database
+    ports:
+      - "8888:80"
     environment:
       PMA_HOST: database
       PMA_PORT: 3306
