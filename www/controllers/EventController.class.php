@@ -3,7 +3,7 @@ require_once(dirname(__FILE__) . '/../class/View.class.php');
 require_once(dirname(__FILE__) . '/../class/Event.class.php');
 class EventController {
     public static function showEventDetail() {
-        $userEvent = Event::getEventById(1005);
+        $userEvent = Event::getEventById(1002);
         $mainView = new View('EventDetail', 'Event Detail');
         $mainView->addVar('event', $userEvent);
         $mainView->render();
