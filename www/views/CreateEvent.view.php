@@ -1,20 +1,3 @@
-<?php
-// $event_title = 'Sample Event';
-// $event_date = '2025-02-20';
-// $event_time = '14:00:00';
-// $venue = 'Sample Venue';
-// $description = 'This is a description of the sample event.';
-
-// $event = new Event(
-//   $event_title,
-//   $event_date,
-//   $event_time,
-//   $venue,
-//   $description
-// );
-// $event->save();
-?>
-
 <div class="event-container">
   <h1>Create Event</h1>
   <form id="eventForm" accept-charset="UTF-8" role="form" method="post" action="/create_event">

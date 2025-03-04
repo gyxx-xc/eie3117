@@ -1,5 +1,7 @@
 <?php
 require_once(dirname(__FILE__) . '/Database.class.php');
+require_once(dirname(__FILE__) . "/ServerError.class.php");
+
 class Event {
     public $title, $date, $time, $venue, $description;
 
@@ -28,17 +30,19 @@ class Event {
         $stmt = Database::prepare("SELECT event_title, event_date, event_time, venue, description FROM events WHERE event_id = :event_id");
         Database::bindParam($stmt, ':event_id', $event_id, PDO::PARAM_INT);
 
-        if (Database::execute($stmt) && $stmt->rowCount() > 0) {
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $event = new Event(
-                $row["event_title"],
-                $row["event_date"],
-                $row["event_time"],
-                $row["venue"],
-                $row["description"]);
-        } else {
-            echo "event not found";
-        }
+        if (!Database::execute($stmt))
+            ServerError::throwError(500, "can't access database");
+        if ($stmt->rowCount() > 1)
+            ServerError::throwError(500, "find administor");
+        if ($stmt->rowCount() <= 0)
+            ServerError::throwError(404, "event not found");
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $event = new Event(
+            $row["event_title"],
+            $row["event_date"],
+            $row["event_time"],
+            $row["venue"],
+            $row["description"]);
         return $event;
     }
 }

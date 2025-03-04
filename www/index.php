@@ -5,24 +5,19 @@ require("vendor/autoload.php");
 $router = new AltoRouter();
 $router->setBasePath("");
 
-// Route definitions
-$router->map('GET', '/event', 'EventController@showEventDetail');
-$router->map('GET', '/create', 'EventController@showCreateEvent');
-$match = $router->match();
+$router->map('GET', '/event/[i:event_id]?', 'EventController@showEventDetail');
+$router->map('GET', '/create_event', 'EventController@showCreateEvent');
+$router->map('POST', '/create_event', 'EventController@processCreateEvent');
 
-if(!$match) { // No match, which means the user is browsing a non-defined page
+$match = $router->match();
+if(!$match)
     ServerError::throwError(404, 'Path not found');
-}else{
-    // Test the syntax: "controller_name@function"
-    list($controllerClassName, $methodName) = explode('@', $match['target']);
-    if((@include_once("controllers/" . $controllerClassName . ".class.php")) == TRUE) {
-        if (is_callable(array($controllerClassName, $methodName))) {
-            call_user_func_array(array($controllerClassName, $methodName), ($match['params']));
-        } else {
-            ServerError::throwError(500, 'Route not callable');
-        }
-    }else{
-        ServerError::throwError(500, 'Controller not includible');
-    }
-}
+
+list($controllerClassName, $methodName) = explode('@', $match['target']);
+if(!@include_once("controllers/" . $controllerClassName . ".class.php"))
+    ServerError::throwError(500, 'Controller not includible');
+if (!is_callable(array($controllerClassName, $methodName)))
+    ServerError::throwError(500, 'Route not callable');
+
+call_user_func_array(array($controllerClassName, $methodName), ($match['params']));
 ?>
