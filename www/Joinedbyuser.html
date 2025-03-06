@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joinedbyuser</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 20px;
+        }
+        .container {
+            width: 60%;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #ffffff;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .view-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .view-btn:hover {
+            background: #0056b3;
+        }
+        .pagination {
+            margin-top: 20px;
+        }
+        .pagination button {
+            padding: 5px 10px;
+            margin: 5px;
+            border: none;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .pagination button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Joined by user</h2>
+        <ul id="list"></ul>
+        <div class="pagination">
+            <button id="prev" onclick="changePage(-1)">front page</button>
+            <span id="page-info"></span>
+            <button id="next" onclick="changePage(1)">next page</button>
+        </div>
+    </div>
+
+    <script>
+        const itemsPerPage = 5;
+        let currentPage = 1;
+        const data = [
+            "A", "B", "C", "D", "E",
+            "F", "G", "H", "I", "J",
+            "K", "L"
+        ];
+
+        function renderList() {
+            const listElement = document.getElementById("list");
+            listElement.innerHTML = "";
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageItems = data.slice(start, end);
+
+            pageItems.forEach(item => {
+                const li = document.createElement("li");
+                li.innerHTML = `${item} <button class="view-btn">View</button>`;
+                listElement.appendChild(li);
+            });
+
+            document.getElementById("page-info").textContent = ` ${currentPage}  /  ${Math.ceil(data.length / itemsPerPage)} `;
+            document.getElementById("prev").disabled = currentPage === 1;
+            document.getElementById("next").disabled = currentPage === Math.ceil(data.length / itemsPerPage);
+        }
+
+        function changePage(direction) {
+            currentPage += direction;
+            renderList();
+        }
+
+        renderList();
+    </script>
+</body>
+</html>
