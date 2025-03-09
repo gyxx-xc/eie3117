@@ -23,13 +23,42 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-    <div class="container-fluid">
+  <nav class="navbar">
+      <ul class="navbar-menu">
+        <li><a href="/user_event/1">Created Events</a></li>
+        <li><a href="/joined_event/1">Joined Events</a></li>
+        <li><a href="/all_event/1">All Events</a></li>
+        <li><a href="/create_event">Create Event</a></li>
+      </ul>
+<?php if (SessionController::getInstance()->isUserLoggedIn()): ?>
+    <div class="user-info">
+      <div>
+        Welcome, <?=SessionController::getInstance()->getUser()->username ?>!
+        </div>
+        <div class="logio">
+                  <img src="/img/<?=SessionController::getInstance()->getUser()->username ?>.jpg?rand=<?php echo rand(); ?>"
+                    onerror="this.src='/img/tpl.jpg'"
+                    onclick="window.location.href='/upload'"
+                    width="20px" height="20px" border="1"/>
+          </div>
+<div class="logio">
+          <a href="/logout">logout</a>
+        </div>
+      </div>
+<?php else: ?>
+    <div class="user-info">
+      <div class="logio">
+        <a href="/login">login</a>
+      </div>
+      <div class="logio">
+        <a href="/register">register</a>
+      </div>
     </div>
+<?php endif ?>
   </nav>
 
-  <main class="container">
-    <?php $currentView->showMainContent(compact(array_keys(get_defined_vars()))); ?>
+  <main class="">
+<?php $currentView->showMainContent(compact(array_keys(get_defined_vars()))); ?>
   </main>
 </body>
 

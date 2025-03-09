@@ -1,7 +1,5 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
     background-color: #f4f4f4;
 }
 
@@ -56,3 +54,112 @@ button:hover {
 .event-details span {
     font-weight: bold;
 }
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        #event-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .event-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f9f9f9;;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            transition: background 0.3s;
+        }
+        .event-item:hover {
+            background: #e9ecef;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .view-btn, .join-btn {
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            color: white;
+        }
+                .view-btn {
+            background: #007bff;
+        }
+        .view-btn:hover {
+            background: #0056b3;
+        }
+        .join-btn {
+            background: #28a745;
+        }
+        .join-btn:hover {
+            background: #1e7e34;
+        }
+        .pagination {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .pagination button {
+            padding: 5px 10px;
+            margin: 5px;
+            border: none;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .pagination button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+
+  .navbar {
+      background-color: #333;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  }
+  .navbar-menu {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+  }
+  .navbar-menu li {
+      margin-right: 20px;
+  }
+  .navbar-menu a {
+      color: white;
+      text-decoration: none;
+  }
+  .navbar-menu a:hover {
+      text-decoration: underline;
+  }
+  .user-info {
+      color: white;
+      display: flex;
+      align-items: center;
+  }
+        .logio {
+            margin-left: 15px;
+            color: #9effb4;
+        }
+        .logio a {
+            color: #9effb4;
+            text-decoration: none;
+        }
+        .logio a:hover {
+            text-decoration: underline;
+        }

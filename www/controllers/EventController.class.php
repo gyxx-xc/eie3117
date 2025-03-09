@@ -5,13 +5,25 @@ class EventController {
     public static function showEventDetail($event_id) {
         $userEvent = Event::getEventById($event_id);
         $mainView = new View('EventDetail', 'Event Detail');
+
+        // get all user from user_events table join user table
+        $stmt = Database::prepare("SELECT users.username
+FROM user_events JOIN users ON user_events.user_id = users.user_id
+ WHERE event_id = :event_id");
+        Database::bindParam($stmt, ':event_id', $event_id, PDO::PARAM_INT);
+        if (!Database::execute($stmt))
+            ServerError::throwError(500, "can't access database");
+        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $mainView->addVar('users', $users);
         $mainView->addVar('event', $userEvent);
         $mainView->render();
     }
 
     public static function showCreateEvent() {
-        $addBookmarkPageView = new View('CreateEvent', 'Create Event');
-        $addBookmarkPageView->render();
+        SessionController::getInstance()->makeSureLoggedIn('/login');
+        $createEventView = new View('CreateEvent', 'Create Event');
+        $createEventView->render();
     }
 
     public static function processCreateEvent() {
@@ -22,7 +34,7 @@ class EventController {
             $_POST["venue"],
             $_POST["description"]);
         $event->save();
-        echo("ok");
+        header("Location: /");
     }
 }
 ?>

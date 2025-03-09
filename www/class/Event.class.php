@@ -16,13 +16,15 @@ class Event {
     public function save() {
         $stmt = Database::prepare(
             "INSERT INTO events " .
-            "(event_title, event_date, event_time, venue, description) " .
-            "VALUES (:event_title, :event_date, :event_time, :venue, :description)");
+            "(event_title, event_date, event_time, venue, description, creator_id) " .
+            "VALUES (:event_title, :event_date, :event_time, :venue, :description, :user)");
         Database::bindParam($stmt, ':event_title', $this->title);
         Database::bindParam($stmt, ':event_date', $this->date);
         Database::bindParam($stmt, ':event_time', $this->time);
         Database::bindParam($stmt, ':venue', $this->venue);
         Database::bindParam($stmt, ':description', $this->description);
+        $user_id = SessionController::getInstance()->getUser()->userid;
+        Database::bindParam($stmt, ':user', $user_id, PDO::PARAM_INT);
         Database::execute($stmt);
     }
 
