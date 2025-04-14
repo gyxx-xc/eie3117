@@ -2,7 +2,11 @@
 class ServerError {
     public static function throwError ($code, $reason) {
         http_response_code($code);
-        die("HTTP Error " . $code . ": " . $reason);
+        $view = new View('error', 'Error');
+        $view->addVar('code', $code);
+        $view->addVar('reason', $reason);
+        $view->render();
+        exit();
     }
 }
 ?>

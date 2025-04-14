@@ -19,6 +19,9 @@ class ListController {
             ServerError::throwError(404, "no event");
         $total_events = $stmt->fetch()['total_events'];
         $total_page = ceil($total_events / 10);
+        if ($total_page == 0) {
+            $total_page = 1;
+        }
 
         self::checkPage($page, $total_page);
         $stmt = Database::prepare("SELECT * FROM events LIMIT :start, 10;");
@@ -49,6 +52,9 @@ class ListController {
             ServerError::throwError(404, "no event");
         $total_events = $stmt->fetch()['total_events'];
         $total_page = ceil($total_events / 10);
+        if ($total_page == 0) {
+            $total_page = 1;
+        }
 
         self::checkPage($page, $total_page);
         $stmt = Database::prepare(
@@ -86,6 +92,9 @@ class ListController {
             ServerError::throwError(404, "no event");
         $total_events = $stmt->fetch()['total_events'];
         $total_page = ceil($total_events / 10);
+        if ($total_page == 0) {
+            $total_page = 1;
+        }
 
         self::checkPage($page, $total_page);
         $stmt = Database::prepare(
