@@ -22,7 +22,8 @@ class LoginController
 
         $loginPageView = new View('login', 'Login');
 
-        $user = User::getUserByUsernameAndPassword($_POST["username"], ($_POST["password"]));
+        $user = User::getUserByUsernameAndPassword(
+            htmlspecialchars($_POST["username"]), htmlspecialchars($_POST["password"]));
         if ($user != null) { // Is a user with this username and hashed password pair already exists?
             // If yes, logs the user in
             SessionController::getInstance()->login($user);
@@ -64,12 +65,12 @@ class LoginController
         $sessionController->makeSureLoggedOut('/'); // Why a logged in user want to access this page?
 
         $registerPageView = new View('register', 'Register');
-        if (User::getUserByUsername($_POST["username"]) == null) { // Is a user with this username already exists?
+        if (User::getUserByUsername(htmlspecialchars($_POST["username"])) == null) { // Is a user with this username already exists?
             // If no, insert a new record
             $user = new User();
-            $user->username = $_POST["username"];
-            $user->password = ($_POST["password"]);
-            $user->email = $_POST["email"];
+            $user->username = htmlspecialchars($_POST["username"]);
+            $user->password = htmlspecialchars($_POST["password"]);
+            $user->email = htmlspecialchars($_POST["email"]);
             if (User::createNewUser($user)) {
                 // Register succeed
                 $registerPageView = new View('notice', 'Register Succeed');
@@ -105,9 +106,18 @@ class LoginController
         $sessionController = SessionController::getInstance();
         $sessionController->makeSureLoggedIn('/login'); // Why a logged out user want to access this page?
 
+        //check if is image
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime = finfo_file($finfo, $_FILES["profile_image"]["tmp_name"]);
+        finfo_close($finfo);
+        if (strpos($mime, 'image') === false) {
+            $uploadPageView = new View('upload', 'Upload');
+            $uploadPageView->addVar('error', 'Please select an image file.');
+            $uploadPageView->render();
+            return;
+        }
 
         $target_file = "img/" . $sessionController->getUser()->username . ".jpg";
-        // $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
         if (move_uploaded_file($_FILES["profile_image"]["tmp_name"], $target_file)) {
             $uploadOKView = new View('notice', 'Upload Succeed');
             $uploadOKView->addVar('title', 'Upload: Succeed');

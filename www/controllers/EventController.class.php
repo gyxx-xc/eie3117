@@ -28,11 +28,12 @@ FROM user_events JOIN users ON user_events.user_id = users.user_id
 
     public static function processCreateEvent() {
         $event = new Event(
-            $_POST["event_title"],
-            $_POST["event_date"],
-            $_POST["event_time"],
-            $_POST["venue"],
-            $_POST["description"]);
+            htmlspecialchars($_POST["event_title"]),
+            htmlspecialchars($_POST["event_date"]),
+            htmlspecialchars($_POST["event_time"]),
+            htmlspecialchars($_POST["venue"]),
+            htmlspecialchars($_POST["description"])
+            );
         $event->save();
         header("Location: /");
     }

@@ -118,7 +118,7 @@ button:hover {
             cursor: pointer;
             border-radius: 5px;
         }
-        .pagination button:disabled {
+        button:disabled {
             background: #ccc;
             cursor: not-allowed;
         }
