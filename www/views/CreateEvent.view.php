@@ -21,6 +21,7 @@
       <label class="input-group-text" for="description">Description:</label>
       <input type="text" id="description" name="description">
     </div>
+    <input type="hidden" name="csrf" value="<?=$csrf?>">
     <button class="btn btn-lg btn-warning" type="submit">Create Event</button>
   </form>
 </div>

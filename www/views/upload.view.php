@@ -8,6 +8,7 @@
                 <label class="input-group-text" for="venue">Select profile image to upload: </label>
                 <input type="file" accept="image/*" name="profile_image" id="profile_image">
             </div>
+            <input type="hidden" name="csrf" value="<?= $csrf ?>">
             <button id='submit' class="btn btn-lg btn-warning" type="submit">Upload Image</button>
 
             <p id='error' class='required'><?php if (isset($error)) echo $error; ?></p>

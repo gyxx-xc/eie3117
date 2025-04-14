@@ -97,6 +97,7 @@ class LoginController
         $sessionController->makeSureLoggedIn('/login'); // Why a logged out user want to access this page?
 
         $uploadPageView = new View('upload', 'Upload');
+        $uploadPageView->addVar('csrf', SessionController::getInstance()->getCsrf());
         $uploadPageView->render();
     }
 
@@ -105,6 +106,10 @@ class LoginController
         // This shows the submitted upload page
         $sessionController = SessionController::getInstance();
         $sessionController->makeSureLoggedIn('/login'); // Why a logged out user want to access this page?
+
+        if ($_POST['csrf'] != $sessionController->getCsrf()) {
+            ServerError::throwError(403, "Invalid CSRF token");
+        }
 
         //check if is image
         $finfo = finfo_open(FILEINFO_MIME_TYPE);

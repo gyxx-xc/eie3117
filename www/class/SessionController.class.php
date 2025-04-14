@@ -57,5 +57,12 @@ class SessionController {
         $this->setUser(null);
         setcookie("user", "", time()-3600);
     }
+
+    function getCsrf() {
+        if (!isset($_SESSION['csrf'])) {
+            $_SESSION['csrf'] = bin2hex(random_bytes(32));
+        }
+        return $_SESSION['csrf'];
+    }
 }
 ?>

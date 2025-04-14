@@ -1,4 +1,6 @@
 <?php
+require_once(dirname(__FILE__) . '/../class/View.class.php');
+
 class ServerError {
     public static function throwError ($code, $reason) {
         http_response_code($code);

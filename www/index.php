@@ -15,7 +15,7 @@ $router->map('POST', '/create_event', 'EventController@processCreateEvent');
 $router->map("GET", '/user_event/[i:page]', 'ListController@showUserCreateList');
 $router->map("GET", '/joined_event/[i:page]', 'ListController@showUserJoinList');
 $router->map("GET", '/all_event/[i:page]', 'ListController@showAllList');
-$router->map("GET", '/join_event/[i:event_id]', 'ListController@processJoinEvent');
+$router->map("POST", '/join_event/[i:event_id]', 'ListController@processJoinEvent');
 $router->map('GET', '/', 'ListController@showMain');
 
 $router->map('GET', '/logout', 'LoginController@logout');

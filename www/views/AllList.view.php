@@ -7,8 +7,11 @@
       <div class="buttons">
         <button class="view-btn"
           onclick="window.location.href='/event/<?=$event['event_id']?>'">View</button>
-        <button class="join-btn"
-          onclick="window.location.href='/join_event/<?=$event['event_id']?>'">Join</button>
+        <form action="/join_event/<?=$event['event_id']?>" method="post" >
+        <input type="hidden" name="csrf" value="<?=$csrf?>">
+        <button type="submit" class="join-btn"
+          name="join"> Join</button>
+        </form>
       </div>
     </li>
 <?php } ?>

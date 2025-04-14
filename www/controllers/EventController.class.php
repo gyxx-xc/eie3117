@@ -23,10 +23,16 @@ FROM user_events JOIN users ON user_events.user_id = users.user_id
     public static function showCreateEvent() {
         SessionController::getInstance()->makeSureLoggedIn('/login');
         $createEventView = new View('CreateEvent', 'Create Event');
+        $createEventView->addVar('csrf', SessionController::getInstance()->getCsrf());
         $createEventView->render();
     }
 
     public static function processCreateEvent() {
+        SessionController::getInstance()->makeSureLoggedIn('/login');
+        // check csrf token
+        if ($_POST['csrf'] != SessionController::getInstance()->getCsrf()) {
+            ServerError::throwError(403, "Invalid CSRF token");
+        }
         $event = new Event(
             htmlspecialchars($_POST["event_title"]),
             htmlspecialchars($_POST["event_date"]),

@@ -34,6 +34,7 @@ class ListController {
         $allEventView->addVar('page', $page);
         $allEventView->addVar('total_page', $total_page);
         $allEventView->addVar('events', $events);
+        $allEventView->addVar('csrf', SessionController::getInstance()->getCsrf());
         $allEventView->render();
     }
 
@@ -121,6 +122,10 @@ class ListController {
     public static function processJoinEvent($event_id) {
         $sessionController = SessionController::getInstance();
         $sessionController->makeSureLoggedIn('/login');
+
+        if (!isset($_POST['csrf']) || $_POST['csrf'] != $sessionController->getCsrf()) {
+            ServerError::throwError(403, "Invalid CSRF token");
+        }
 
         // insert a (user_id, event_id, created = false)
         // check if already joined
