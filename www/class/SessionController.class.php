@@ -50,7 +50,13 @@ class SessionController {
     function login(User $user) {
         $this->setRole('user');
         $this->setUser($user);
-        setcookie("user", $user->username, time()+3600);
+        setcookie("user", $user->username, [
+            'expires' => time() + 3600,
+            'path' => '/',
+            'secure' => true,
+            'httponly' => true,
+            'samesite' => 'strict',
+        ]);
     }
     function logout() {
         $this->setRole('guest');

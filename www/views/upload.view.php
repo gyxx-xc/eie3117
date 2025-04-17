@@ -2,7 +2,7 @@
     <h3 class="card-title">Upload image</h3>
     <div class="card-body text-center">
 
-        <form action="/upload" method="post" enctype="multipart/form-data">
+        <form action="/uploadP" method="post" enctype="multipart/form-data">
 
             <div class="form-group">
                 <label class="input-group-text" for="venue">Select profile image to upload: </label>

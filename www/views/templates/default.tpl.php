@@ -34,17 +34,22 @@
     <div class="user-info">
       <div>
         Welcome, <?=SessionController::getInstance()->getUser()->username ?>!
-        </div>
-        <div class="logio">
-                  <img src="/img/<?=SessionController::getInstance()->getUser()->username ?>.jpg?rand=<?php echo rand(); ?>"
-                    onerror="this.src='/img/tpl.jpg'"
-                    onclick="window.location.href='/upload'"
-                    width="20px" height="20px" border="1"/>
-          </div>
-<div class="logio">
-          <a href="/logout">logout</a>
-        </div>
       </div>
+      <div class="logio">
+        <a href='/upload'>
+          <img id='icon' src="/img/<?=SessionController::getInstance()->getUser()->username ?>.jpg?rand=<?php echo rand(); ?>"
+          width="20px" height="20px" border="1"/></a>
+        <script>
+          var img = document.getElementById('icon');
+          img.onerror = function() {
+            this.src = '/img/defult/defult.jpg';
+          };
+        </script>
+      </div>
+      <div class="logio">
+        <a href="/logout">logout</a>
+      </div>
+    </div>
 <?php else: ?>
     <div class="user-info">
       <div class="logio">

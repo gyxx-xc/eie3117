@@ -3,3 +3,9 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f [OR]
 RewriteCond %{REQUEST_FILENAME} !\.(css|js|jpg)$
 RewriteRule . index.php [L]
+
+Header set X-Frame-Options DENY
+Header set X-Content-Type-Options nosniff
+Header add Content-Security-Policy "frame-ancestors 'none'; form-action 'self'; default-src 'self' 'sha256-R/jkoQXfpS+eKcjnU6npHsaQr9t6gZVmJhODVHoM7MM=' 'sha256-oRkgT6uHyevAJBxI3NhHiBl51ll8fqA1jj61eyWinBg=';"
+Header unset X-Powered-By
+Header unset Server

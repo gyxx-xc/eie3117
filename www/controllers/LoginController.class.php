@@ -11,16 +11,24 @@ class LoginController
         $sessionController->makeSureLoggedOut('/'); // Why a logged in user want to access this page?
 
         $loginPageView = new View('login', 'Login');
+        $loginPageView->addVar('csrf', SessionController::getInstance()->getCsrf());
         $loginPageView->render();
     }
 
     public static function processLogin()
     {
+        // check csrf token
+        if (!isset($_POST['csrf'])) {
+            ServerError::throwError(403, "Invalid CSRF token");
+        }
+        if ($_POST['csrf'] != SessionController::getInstance()->getCsrf()) {
+            ServerError::throwError(403, "Invalid CSRF token");
+        }
+
         // This shows the submitted login page
         $sessionController = SessionController::getInstance();
         $sessionController->makeSureLoggedOut('/'); // Why a logged in user want to access this page?
 
-        $loginPageView = new View('login', 'Login');
 
         $user = User::getUserByUsernameAndPassword(
             htmlspecialchars($_POST["username"]), htmlspecialchars($_POST["password"]));
@@ -30,9 +38,13 @@ class LoginController
             header("Location: /");
             exit(); // No futher execution is needed
         } else {
-            $loginPageView->addVar('error', 'Invalid username or password');
+            $loginFailView = new View('notice', 'Login Failed');
+            $loginFailView->addVar('title', 'Login Failed');
+            $loginFailView->addVar('content', 'Invalid username or password.');
+            $loginFailView->addVar('link', '/login');
+            $loginFailView->addVar('linkText', 'Back to the login page');
+            $loginFailView->render();
         }
-        $loginPageView->render();
     }
 
     public static function logout()
@@ -55,16 +67,25 @@ class LoginController
         $sessionController->makeSureLoggedOut('/'); // Why a logged in user want to access this page?
 
         $registerPageView = new View('register', 'Register');
+        $registerPageView->addVar('csrf', SessionController::getInstance()->getCsrf());
         $registerPageView->render();
     }
 
     public static function processRegister()
     {
+        if (!isset($_POST['csrf'])) {
+            ServerError::throwError(403, "Invalid CSRF token");
+        }
+        //check csrf token
+        if ($_POST['csrf'] != SessionController::getInstance()->getCsrf()) {
+            ServerError::throwError(403, "Invalid CSRF token");
+        }
+
+
         // This shows the submitted register page
         $sessionController = SessionController::getInstance();
         $sessionController->makeSureLoggedOut('/'); // Why a logged in user want to access this page?
 
-        $registerPageView = new View('register', 'Register');
         if (User::getUserByUsername(htmlspecialchars($_POST["username"])) == null) { // Is a user with this username already exists?
             // If no, insert a new record
             $user = new User();
@@ -82,11 +103,13 @@ class LoginController
                 exit(); // Rest of the code should not be executed.
             } else {
                 // Failed to create new user
-
             }
         }
-
-        $registerPageView->addVar('error', 'Failed to create new user');
+        $registerPageView = new View('notice', 'Register Failed');
+        $registerPageView->addVar('title', 'Registering: Failed');
+        $registerPageView->addVar('content', 'Failed to create new user.');
+        $registerPageView->addVar('link', '/register');
+        $registerPageView->addVar('linkText', 'Back to the register page');
         $registerPageView->render();
     }
 
@@ -103,6 +126,10 @@ class LoginController
 
     public static function processUpload()
     {
+        if (!isset($_POST['csrf'])) {
+            ServerError::throwError(403, "Invalid CSRF token");
+        }
+
         // This shows the submitted upload page
         $sessionController = SessionController::getInstance();
         $sessionController->makeSureLoggedIn('/login'); // Why a logged out user want to access this page?
@@ -116,9 +143,12 @@ class LoginController
         $mime = finfo_file($finfo, $_FILES["profile_image"]["tmp_name"]);
         finfo_close($finfo);
         if (strpos($mime, 'image') === false) {
-            $uploadPageView = new View('upload', 'Upload');
-            $uploadPageView->addVar('error', 'Please select an image file.');
-            $uploadPageView->render();
+            $uploadFailView = new View('notice', 'Upload Failed');
+            $uploadFailView->addVar('title', 'Upload: Failed');
+            $uploadFailView->addVar('content', 'The file is not an image.');
+            $uploadFailView->addVar('link', '/upload');
+            $uploadFailView->addVar('linkText', 'Back to the upload page');
+            $uploadFailView->render();
             return;
         }
 
@@ -131,9 +161,12 @@ class LoginController
             $uploadOKView->addVar('linkText', 'Back to the main page');
             $uploadOKView->render();
         } else {
-            $uploadPageView = new View('upload', 'Upload');
-            $uploadPageView->addVar('error', 'Sorry, there was an error uploading your file.');
-            $uploadPageView->render();
+            $uploadFailView = new View('notice', 'Upload Failed');
+            $uploadFailView->addVar('title', 'Upload: Failed');
+            $uploadFailView->addVar('content', 'Failed to upload the file.');
+            $uploadFailView->addVar('link', '/upload');
+            $uploadFailView->addVar('linkText', 'Back to the upload page');
+            $uploadFailView->render();
         }
     }
 }

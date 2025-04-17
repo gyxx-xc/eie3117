@@ -6,7 +6,7 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 # Use an official PHP and Apache base image
 FROM php:8.2-apache AS php-apache
 ENV HOSTNAME php-apache
-RUN a2enmod rewrite
+RUN a2enmod rewrite headers
 
 # Expose port 80 for Apache
 EXPOSE 80
@@ -18,5 +18,6 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y git
+    apt-get install -y git && \
+    apt install libapache2-mod-security2 -y
 RUN docker-php-ext-install pdo pdo_mysql

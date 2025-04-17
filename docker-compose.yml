@@ -9,6 +9,7 @@ services:
     volumes:
       - ./www:/var/www/html:rw
       - ./config/php/php.ini:/usr/local/etc/php/php.ini
+      - ./config/apache/apache2.conf:/etc/apache2/apache2.conf
       - ./logs/apache2:/var/log/apache2
     environment:
       APACHE_DOCUMENT_ROOT: /var/www/html

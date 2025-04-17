@@ -20,11 +20,11 @@ $router->map('GET', '/', 'ListController@showMain');
 
 $router->map('GET', '/logout', 'LoginController@logout');
 $router->map('GET', '/login', 'LoginController@showLogin');
-$router->map('POST', '/login', 'LoginController@processLogin');
+$router->map('POST', '/loginP', 'LoginController@processLogin');
 $router->map('GET', '/register', 'LoginController@showRegister');
-$router->map('POST', '/register', 'LoginController@processRegister');
+$router->map('POST', '/registerP', 'LoginController@processRegister');
 $router->map('GET', '/upload', 'LoginController@showUpload');
-$router->map('POST', '/upload', 'LoginController@processUpload');
+$router->map('POST', '/uploadP', 'LoginController@processUpload');
 
 $match = $router->match();
 if(!$match)
