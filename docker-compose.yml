@@ -5,7 +5,8 @@ services:
     build: bin/webserver
     container_name: webserver
     ports:
-      - "8080:80"
+      - "80:80"
+      - "443:443"
     volumes:
       - ./www:/var/www/html:rw
       - ./config/php/php.ini:/usr/local/etc/php/php.ini
