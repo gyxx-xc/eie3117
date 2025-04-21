@@ -9,6 +9,7 @@ services:
       - "443:443"
     volumes:
       - ./www:/var/www/html:rw
+      - ./certbot.sh:/certbot.sh
       - ./config/php/php.ini:/usr/local/etc/php/php.ini
       - ./config/apache/apache2.conf:/etc/apache2/apache2.conf
       - ./logs/apache2:/var/log/apache2
